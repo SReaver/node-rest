@@ -51,7 +51,12 @@ app.use((error, req, res, nex) => {
 
 mongoose.connect('mongodb+srv://sergey:timhib-vigxo5-kiQsyp@cluster0-i5rut.mongodb.net/messages', { useUnifiedTopology: true, useNewUrlParser: true })
   .then(result => {
-    app.listen(8080);
+    const server = app.listen(8080);
+    const io = require('./socket').init(server);
+    io.on('connection', socket => {
+      console.log('client connected');
+
+    });
   }).then(() => console.log('app started at port 8080')
   ).catch(err => console.log(err)
   );
